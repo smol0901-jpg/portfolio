@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Александр — Портфолио проектов</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0a1a;
+            color: #e0e0f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg-stars {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(88, 40, 180, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(40, 100, 220, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(180, 40, 120, 0.1) 0%, transparent 50%);
+        }
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .star {
+            position: absolute; width: 2px; height: 2px;
+            background: white; border-radius: 50%;
+            animation: twinkle var(--dur) ease-in-out infinite; opacity: 0;
+        }
+        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: var(--opacity); } }
+        .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+        .hero { text-align: center; padding: 60px 20px 50px; animation: fadeInUp 1s ease; }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #60a5fa, #f472b6, #fbbf24);
+            background-size: 300% 300%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            animation: gradientShift 6s ease infinite; margin-bottom: 16px;
+        }
+        .hero p { font-size: 1.15rem; color: #9ca3c0; max-width: 600px; margin: 0 auto; line-height: 1.7; }
+        .hero .badge {
+            display: inline-block; margin-top: 20px; padding: 8px 20px; border-radius: 50px;
+            background: rgba(167, 139, 250, 0.12); border: 1px solid rgba(167, 139, 250, 0.3);
+            color: #a78bfa; font-size: 0.9rem; font-weight: 600;
+        }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .stats { display: flex; justify-content: center; gap: 40px; margin: 30px 0 50px; flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat-num {
+            font-size: 2.2rem; font-weight: 800;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .stat-label { font-size: 0.85rem; color: #6b7294; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 30px; padding-left: 16px; border-left: 3px solid #a78bfa; color: #c4b5fd; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 60px; }
+        .card {
+            background: rgba(20, 20, 45, 0.7); border: 1px solid rgba(100, 100, 180, 0.15);
+            border-radius: 16px; padding: 28px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden; animation: fadeInUp 0.8s ease backwards;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 100%; height: 3px; background: var(--accent); opacity: 0; transition: opacity 0.3s;
+        }
+        .card:hover { transform: translateY(-6px); border-color: rgba(167, 139, 250, 0.3); box-shadow: 0 20px 60px rgba(100, 60, 200, 0.15); }
+        .card:hover::before { opacity: 1; }
+        .card-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+        .card h3 { font-size: 1.2rem; font-weight: 700; color: #e8e0ff; margin-bottom: 10px; }
+        .card p { font-size: 0.92rem; color: #8b8ba8; line-height: 1.6; margin-bottom: 18px; }
+        .card-link { display: inline-flex; align-items: center; gap: 6px; color: #a78bfa; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; }
+        .card-link:hover { color: #c4b5fd; gap: 10px; }
+        .card-tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-right: 6px; margin-bottom: 6px; }
+        .tag-ai { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
+        .tag-web { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
+        .tag-tool { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+        .tag-fun { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .tag-joy { background: rgba(244, 114, 182, 0.15); color: #f472b6; }
+        .footer { text-align: center; padding: 40px 20px; border-top: 1px solid rgba(100, 100, 180, 0.1); color: #4a4a6a; font-size: 0.85rem; }
+        .footer a { color: #a78bfa; text-decoration: none; }
+        @media (max-width: 600px) { .projects-grid { grid-template-columns: 1fr; } .stats { gap: 24px; } .hero { padding: 40px 16px 30px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-stars"></div>
+    <div class="stars" id="stars"></div>
+    <div class="container">
+        <div class="hero">
+            <h1>Александр</h1>
+            <p>Разработчик · Аналитик · Продакт · Дизайнер<br>Создаю инструменты, которые решают задачи и поднимают настроение</p>
+            <span class="badge">🚀 ASV_PROD</span>
+        </div>
+        <div class="stats">
+            <div class="stat"><div class="stat-num">7</div><div class="stat-label">Проектов</div></div>
+            <div class="stat"><div class="stat-num">4</div><div class="stat-label">Платформы</div></div>
+            <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Идей</div></div>
+        </div>
+        <h2 class="section-title">Проекты</h2>
+        <div class="projects-grid">
+            <div class="card" style="--accent: linear-gradient(90deg, #a78bfa, #60a5fa); animation-delay: 0.1s">
+                <span class="card-icon">🧠</span>
+                <h3>NEURAL_ARCHITECT_PREMIUM++</h3>
+                <p>Нейросетевой архитектор — инструмент для проектирования и сборки AI-решений. Флагманский проект.</p>
+                <div><span class="card-tag tag-ai">AI</span><span class="card-tag tag-web">Web App</span></div><br>
+                <a href="https://neural-architect.netlify.app" target="_blank" class="card-link">Открыть →</a>
+            </div>
+            <div class="card" style="--accent: linear-gradient(90deg, #34d399, #60a5fa); animation-delay: 0.2s">
+                <span class="card-icon">📋</span>
+                <h3>HACCP Control</h3>
+                <p>Система контроля и управления критическими точками. Для бизнеса, где качество — не опция.</p>
+                <div><span class="card-tag tag-tool">Инструмент</span><span class="card-tag tag-web">Web App</span></div><br>
+                <a href="https://haccp-control.netlify.app" target="_blank" class="card-link">Открыть →</a>
+            </div>
+            <div class="card" style="--accent: linear-gradient(90deg, #f472b6, #fbbf24); animation-delay: 0.3s">
+                <span class="card-icon">🃏</span>
+                <h3>LenCards</h3>
+                <p>Карточная система — удобный инструмент для работы с данными в формате карточек.</p>
+                <div><span class="card-tag tag-tool">Инструмент</span><span class="card-tag tag-web">Web App</span></div><br>
+                <a href="https://lencards.netlify.app" target="_blank" class="card-link">Открыть →</a>
+            </div>
+            <div class="card" style="--accent: linear-gradient(90deg, #fbbf24, #f472b6); animation-delay: 0.4s">
+                <span class="card-icon">🎨</span>
+                <h3>Stickers ON</h3>
+                <p>Платформа для создания и управления стикерами. Творчество без границ.</p>
+                <div><span class="card-tag tag-fun">Креатив</span><span class="card-tag tag-web">Web App</span></div><br>
+                <a href="https://stickers-on.netlify.app" target="_blank" class="card-link">Открыть →</a>
+            </div>
+            <div class="card" style="--accent: linear-gradient(90deg, #60a5fa, #34d399); animation-delay: 0.5s">
+                <span class="card-icon">🌐</span>
+                <h3>LenPitSPB</h3>
+                <p>Персональная платформа и визитка. Точка входа во всю экосистему проектов.</p>
+                <div><span class="card-tag tag-web">Web App</span></div><br>
+                <a href="https://lenpitspb.netlify.app" target="_blank" class="card-link">Открыть →</a>
+            </div>
+            <div class="card" style="--accent: linear-gradient(90deg, #f472b6, #a78bfa); animation-delay: 0.6s">
+                <span class="card-icon">🎉</span>
+                <h3>Joy Project</h3>
+                <p>Пространство для позитива и радости. Анимированные цитаты, звёздное небо и хорошее настроение.</p>
+                <div><span class="card-tag tag-joy">Радость</span><span class="card-tag tag-fun">Креатив</span></div><br>
+                <a href="https://smol0901-jpg.github.io/joy-project/" target="_blank" class="card-link">Открыть →</a>
+            </div>
+            <div class="card" style="--accent: linear-gradient(90deg, #a78bfa, #f472b6); animation-delay: 0.7s">
+                <span class="card-icon">🗣</span>
+                <h3>Alice PromptHub</h3>
+                <p>Коллекция промптов для Яндекс Алисы. Готовые сценарии и навыки для голосового ассистента.</p>
+                <div><span class="card-tag tag-ai">AI</span><span class="card-tag tag-tool">Инструмент</span></div><br>
+                <a href="https://alice.yandex.ru/prompthub/users/fabjgv79zu7k5czxx71wkx28a4" target="_blank" class="card-link">Открыть →</a>
+            </div>
+        </div>
+        <div class="footer">
+            <p>Сделано с 💜 · <a href="https://github.com/smol0901-jpg" target="_blank">GitHub</a> · ASV_PROD</p>
+        </div>
+    </div>
+    <script>
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 120; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.setProperty('--dur', (2 + Math.random() * 4) + 's');
+            star.style.setProperty('--opacity', (0.3 + Math.random() * 0.7));
+            star.style.animationDelay = Math.random() * 4 + 's';
+            star.style.width = star.style.height = (1 + Math.random() * 2) + 'px';
+            starsContainer.appendChild(star);
+        }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.style.opacity = '1'; entry.target.style.transform = 'translateY(0)'; }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.card').forEach(card => observer.observe(card));
+    </script>
+</body>
+</html>
